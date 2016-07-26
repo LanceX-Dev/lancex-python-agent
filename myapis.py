@@ -1,17 +1,18 @@
 import json
 import lancexagent as agent 
+import time
 
-def heyman(incoming):
-    return "Hello World!"
+def greeting(incoming):
+    return "Hello, it is now %s" % time.asctime( time.localtime(time.time()) )
 
-def whatup(incoming):
+def loopback(incoming):
     request = json.loads(incoming)['request']
     print request['body']
     return incoming
 
 def main():
-    agent.handleRequest("greeting", heyman)
-    agent.handleRequest("loopback", whatup)
+    agent.handleRequest("greeting", greeting)
+    agent.handleRequest("loopback", loopback)
     agent.loop()
 
 if __name__ == '__main__':
