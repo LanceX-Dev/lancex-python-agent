@@ -32,7 +32,7 @@ class Dispatcher(asyncore.dispatcher):
         # Called when a client connects to our socket
         client_info = self.accept()
         self.logger.debug('handle_accept() -> %s', client_info[1])
-        EchoHandler(sock=client_info[0])
+        IncomingHandler(sock=client_info[0])
         # We only want to deal with one client at a time,
         # so close as soon as we set up the handler.
         # Normally you would not do this and the server
@@ -76,13 +76,13 @@ def handleRequest(uri,cb):
     registerURI(uri)    
     handlers[uri] = cb
 
-class EchoHandler(asyncore.dispatcher):
+class IncomingHandler(asyncore.dispatcher):
     """Handles echoing messages from a single client.
     """
     
     def __init__(self, sock, chunk_size=8192):
         self.chunk_size = chunk_size
-        self.logger = logging.getLogger('EchoHandler%s' % str(sock.getsockname()))
+        self.logger = logging.getLogger('IncomingHandler%s' % str(sock.getsockname()))
         asyncore.dispatcher.__init__(self, sock=sock)
         self.data_to_write = []
         self.data_read = []
